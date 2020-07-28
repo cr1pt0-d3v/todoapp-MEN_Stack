@@ -38,9 +38,9 @@
                         <td> <%= tasks[i].title %></td>
                         <td> <%= tasks[i].description %> </td>
                         <td>
-                            <button type="button" class="btn btn-outline-success">DONE</button>
-                            <button type="button" class="btn btn-outline-danger">DELETE</button>
-                            <button type="button" class="btn btn-outline-info">EDIT</button>
+                            <a href="" class="btn btn-outline-success">DONE</a>
+                            <a href="/delete?id=<%= tasks[i]._id %>" class="btn btn-outline-danger">DELETE</a>
+                            <a href="" class="btn btn-outline-info">EDIT</a>
                         </td>
                     </tr>
                     <% } %>

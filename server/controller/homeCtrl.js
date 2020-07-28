@@ -32,4 +32,18 @@ homeCtrl.addTask = (req, res) => {
   res.end();
 };
 
+//deleting tasks
+homeCtrl.deleteTask = (req, res) => {
+  const { id } = req.query;
+  if (id) {
+    Task.deleteOne({ _id: id }, (err, tasks) => {
+      if (err) throw err;
+      res.redirect("/");
+    });
+  } else {
+    res.send("Please enter a valid ID");
+    res.end();
+  }
+};
+
 module.exports = homeCtrl;
