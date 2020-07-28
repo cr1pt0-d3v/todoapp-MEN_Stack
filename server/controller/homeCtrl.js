@@ -1,48 +1,62 @@
 // Task model
 const Task = require("../models/Task");
+const { update } = require("../models/Task");
 
 const homeCtrl = {};
 
-/* homeCtrl.home = (req, res) => {
-  Task.find((err, tasks) => {
-    if (err) throw err;
-    console.log(tasks);
-    res.render("home", { data: tasks });
-  });
-}; */
-
+// get all the tasks
 homeCtrl.home = async (req, res) => {
   const tasks = await Task.find();
-  console.log(tasks);
+  /* console.log(tasks); */
   res.render("home", { tasks });
 };
 
-//adding tasks
-homeCtrl.addTask = (req, res) => {
+//adding Task
+homeCtrl.addTask = async (req, res) => {
   const { title, description } = req.body;
   const newTask = new Task({
     title,
     description,
   });
-  newTask
-    .save()
-    .then((task) => console.log(`${task} succesfully added!!!`))
-    .catch((err) => console.log(err));
-  res.redirect("/");
-  res.end();
+  try {
+    const addedTask = await newTask.save();
+    /* res.json(addedTask); */
+    res.redirect("/");
+    res.end();
+  } catch (err) {
+    res.json({ message: err });
+  }
 };
 
-//deleting tasks
-homeCtrl.deleteTask = (req, res) => {
+// deleting Task
+homeCtrl.deleteTask = async (req, res) => {
   const { id } = req.query;
-  if (id) {
-    Task.deleteOne({ _id: id }, (err, tasks) => {
-      if (err) throw err;
-      res.redirect("/");
-    });
-  } else {
-    res.send("Please enter a valid ID");
-    res.end();
+  try {
+    const removedTask = await Task.deleteOne({ _id: id });
+    /* res.json(removedTask); */
+    res.redirect("/");
+  } catch (error) {
+    res.json({ message: error });
+  }
+};
+
+// updating Task
+homeCtrl.updateTask = async (req, res) => {
+  const { id } = req.query;
+  try {
+    const updatedTask = await Task.updateOne(
+      { _id: id },
+      {
+        $set: {
+          title: req.body.updateTitle,
+          description: req.body.updateDescription,
+        },
+      }
+    );
+    /*  res.json(updatedTask); */
+    res.redirect("/");
+  } catch (error) {
+    res.json({ message: error });
   }
 };
 

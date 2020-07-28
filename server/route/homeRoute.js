@@ -8,4 +8,6 @@ router.post("/add", homeCtrl.addTask);
 
 router.get("/delete", homeCtrl.deleteTask);
 
+router.post("/update", homeCtrl.updateTask);
+
 module.exports = router;
